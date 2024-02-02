@@ -10,7 +10,7 @@ def read_reference_pdb(pdb_filename: str):
     sel = u.atoms[u.atoms.tempfactors > 0]
     print(f'Selected {sel.n_atoms} by MDAnalysis')
     serials = sel.indices
-    return np.float64(sel.positions), serials.tolist()
+    return np.float64(sel.positions.T), serials.tolist()
 
 
 def build_rmsd_cv(atom_positions, atom_serials):
@@ -20,8 +20,8 @@ def build_rmsd_cv(atom_positions, atom_serials):
     class RMSD(nn.Module):
         def __init__(self, reference_positions, atom_serials, traj_title):
             super().__init__()
-            self.ref_pos_centered, _ = self.bring_to_center(
-                torch.tensor(atom_positions, dtype=torch.float64, device='cuda'))
+            self.ref_pos_centered = self.bring_to_center(
+                torch.tensor(reference_positions, dtype=torch.float64, device='cuda'))
             self.num_atoms = len(atom_serials)
             self.atom_serials = atom_serials
             self.step = 0
@@ -82,11 +82,11 @@ def build_rmsd_cv(atom_positions, atom_serials):
                 return False
 
         def bring_to_center(self, data):
-            center_of_geometry = data.mean(dim=0)
-            return (data - center_of_geometry), center_of_geometry
+            center_of_geometry = data.mean(dim=1, keepdim=True)
+            return data - center_of_geometry
 
         def build_matrix_F(self, pos_target, pos_reference):
-            mat_R = torch.matmul(pos_target.T, pos_reference)
+            mat_R = torch.matmul(pos_target, pos_reference.T)
             F00 = mat_R[0][0] + mat_R[1][1] + mat_R[2][2]
             F01 = mat_R[1][2] - mat_R[2][1]
             F02 = mat_R[2][0] - mat_R[0][2]
@@ -119,8 +119,8 @@ def build_rmsd_cv(atom_positions, atom_serials):
 
         @torch.jit.export
         def calculate(self, position, total_force, mass, charge):
-            position.retain_grad()
-            pos_centered, _ = self.bring_to_center(position)
+            # position.retain_grad()
+            pos_centered = self.bring_to_center(position)
             matrix_F = self.build_matrix_F(pos_centered, self.ref_pos_centered)
             # print(position)
             # if self.step == 0:
