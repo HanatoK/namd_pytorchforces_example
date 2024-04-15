@@ -118,7 +118,7 @@ def build_rmsd_cv(atom_positions, atom_serials):
                 return False
 
         @torch.jit.export
-        def calculate(self, position, total_force, mass, charge):
+        def calculate(self, position, total_force, mass, charge, lattice):
             # position.retain_grad()
             pos_centered = self.bring_to_center(position)
             matrix_F = self.build_matrix_F(pos_centered, self.ref_pos_centered)
@@ -153,7 +153,7 @@ def main():
     model = build_rmsd_cv(atom_positions, atom_serials)
     # Perform a few tests
     input_pos = torch.tensor(atom_positions, dtype=torch.float64, device='cuda', requires_grad=True)
-    f = model.calculate(input_pos, None, None, None)
+    f = model.calculate(input_pos, None, None, None, None)
     print(model.cv)
     print(model.output_lines())
 
