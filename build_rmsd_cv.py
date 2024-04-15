@@ -136,6 +136,7 @@ def build_rmsd_cv(atom_positions, atom_serials):
             self.energy_val = 0.5 * 0.01 * (self.cv - 0.0) * (self.cv - 0.0)
             self.cv = float(rmsd.item())
             # print(self.cv)
+            position.grad.zero_()
             return applied_force
 
         @torch.jit.export
