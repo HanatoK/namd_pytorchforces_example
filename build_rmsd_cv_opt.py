@@ -21,7 +21,8 @@ def build_rmsd_cv(atom_positions, atom_serials):
         def __init__(self, reference_positions, atom_serials, traj_title):
             super().__init__()
             self.ref_pos_centered = self.bring_to_center(
-                torch.tensor(reference_positions, dtype=torch.float64, device='cuda'))
+                torch.tensor(reference_positions, dtype=torch.float, device='cuda'))
+            self.ref_pos_centered_sq = torch.square(self.ref_pos_centered)
             self.num_atoms = len(atom_serials)
             self.atom_serials = atom_serials
             self.step = 0
@@ -35,12 +36,12 @@ def build_rmsd_cv(atom_positions, atom_serials):
             return self.atom_serials
 
         @torch.jit.export
-        def set_step(self, step: int):
-            self.step = step
+        def request_pos_grads(self):
+            return False
 
         @torch.jit.export
-        def request_pos_grads(self):
-            return True
+        def set_step(self, step: int):
+            self.step = step
 
         @torch.jit.export
         def total_force_on(self):
@@ -114,6 +115,23 @@ def build_rmsd_cv(atom_positions, atom_serials):
             F = torch.stack((row0, row1, row2, row3))
             return F
 
+        def buil_rotation_matrix(self, v):
+            q = v[:, -1]
+            R00 = q[0] * q[0] + q[1] * q[1] - q[2] * q[2] - q[3] * q[3]
+            R01 = 2.0 * (q[1] * q[2] - q[0] * q[3])
+            R02 = 2.0 * (q[1] * q[3] + q[0] * q[2])
+            R10 = 2.0 * (q[1] * q[2] + q[0] * q[3])
+            R11 = q[0] * q[0] - q[1] * q[1] + q[2] * q[2] - q[3] * q[3]
+            R12 = 2.0 * (q[2] * q[3] - q[0] * q[1])
+            R20 = 2.0 * (q[1] * q[3] - q[0] * q[2])
+            R21 = 2.0 * (q[2] * q[3] + q[0] * q[1])
+            R22 = q[0] * q[0] - q[1] * q[1] - q[2] * q[2] + q[3] * q[3]
+            row0 = torch.stack((R00, R01, R02))
+            row1 = torch.stack((R10, R11, R12))
+            row2 = torch.stack((R20, R21, R22))
+            R = torch.stack((row0, row1, row2))
+            return R.T
+
         @torch.jit.export
         def run_calculate(self):
             if self.step % self.mts == 0:
@@ -123,27 +141,32 @@ def build_rmsd_cv(atom_positions, atom_serials):
 
         @torch.jit.export
         def calculate(self, position, total_force, mass, charge, lattice):
-            pos_centered = self.bring_to_center(position)
+            position_float = position.to(torch.float32)
+            pos_centered = self.bring_to_center(position_float)
             matrix_F = self.build_matrix_F(pos_centered, self.ref_pos_centered)
             w, v = torch.linalg.eigh(matrix_F)
-            max_eig_val = w[-1]
-            s = torch.sum(torch.square(pos_centered) + torch.square(self.ref_pos_centered))
-            rmsd = torch.sqrt((s - 2.0 * max_eig_val) / self.num_atoms)
-            rmsd.backward()
-            applied_force = -1.0 * 0.01 * (self.cv - 0.0) * position.grad
+            rotation_matrix = self.buil_rotation_matrix(v)
+            ref_pos_rotated = rotation_matrix @ self.ref_pos_centered
+            pos_diff = pos_centered - ref_pos_rotated
+            # WARNING: w[-1] is numerically instable!!
+            rmsd = torch.sqrt(torch.sum(torch.square(pos_diff)) / self.num_atoms)
+            # Manual derivative calcuation seems faster than rmsd.backward()
+            pos_grad_factor = torch.nan_to_num(1.0 / (self.num_atoms * rmsd))
+            pos_grad = pos_grad_factor * pos_diff
+            applied_force = -1.0 * 0.01 * (self.cv - 0.0) * pos_grad
             # Apply restraint at RMSD = 0
             self.energy_val = 0.5 * 0.01 * (self.cv - 0.0) * (self.cv - 0.0)
             self.cv = float(rmsd.item())
             # print(self.cv)
-            position.grad.zero_()
-            return applied_force
+            # position.grad.zero_()
+            return applied_force.to(torch.float64)
 
         @torch.jit.export
         def energy(self):
             return self.energy_val
 
     m = torch.jit.script(RMSD(atom_positions, atom_serials, cv_title))
-    torch.jit.save(m, 'RMSD.pt')
+    torch.jit.save(m, 'RMSD_opt.pt')
     return m
 
 
@@ -151,10 +174,11 @@ def main():
     atom_positions, atom_serials = read_reference_pdb('stmv_ref.pdb')
     model = build_rmsd_cv(atom_positions, atom_serials)
     # Perform a few tests
-    input_pos = torch.tensor(atom_positions, dtype=torch.float64, device='cuda', requires_grad=True)
+    input_pos = torch.tensor(atom_positions, dtype=torch.float64, device='cuda', requires_grad=False)
     f = model.calculate(input_pos, None, None, None, None)
     print(model.cv)
     print(model.output_lines())
+    print(f)
 
 
 if __name__ == '__main__':
