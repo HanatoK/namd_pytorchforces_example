@@ -1,0 +1,98 @@
+#Alanine dipeptide
+seed 1
+
+#set previous output_eabf/alad_90ns
+set current output/alad-test
+
+#Variables
+set temperature		300
+set outputname		$current
+
+#Input
+structure		input_wb29/alad-wb29.psf
+#bincoordinates		$previous.restart.coor
+coordinates		input_wb29/alad-wb_mineq29.pdb
+#binvelocities		$previous.restart.vel
+#ExtendedSystem		$previous.restart.xsc
+ExtendedSystem		input_wb29/alad-wb_mineq29.xsc
+paraTypeCharmm	    	on
+parameters		input_wb29/par_all27_prot_lipid.prm
+parameters		input_wb29/alad.prm
+temperature		$temperature
+
+# Force-Field Parameters
+exclude             scaled1-4
+1-4scaling          1.0
+cutoff              12.0
+switching           on
+switchdist          10.0
+pairlistdist        13.5
+
+# wrapAll			on
+wrapWater		on
+
+# Integrator Parameters
+timestep            2.0  ;# 2fs/step
+rigidBonds          all  ;# needed for 2fs steps
+nonbondedFreq       1
+fullElectFrequency  2  
+stepspercycle       10
+
+# Periodic Boundary Conditions
+# cellBasisVector1 23.6850004196167 0 0
+# cellBasisVector2 0 24.039999961853027 0
+# cellBasisVector3 0 0 23.743000030517578
+# cellOrigin 0.03578807786107063 -0.07686178386211395 -0.00012635492021217942
+
+# PME (for full-system periodic electrostatics)
+PME			yes
+PMEGridSpacing		1.0
+# PMEGridSizeX		30
+# PMEGridSizeY		30
+# PMEGridSizeZ		30
+
+useGroupPressure yes ;# needed for rigidBonds 
+useFlexibleCell no 
+useConstantArea no
+
+# Constant Temperature Control
+langevin            on    ;# do langevin dynamics
+langevinDamping     1     ;# damping coefficient (gamma) of 1/ps
+langevinTemp        $temperature
+langevinHydrogen    off    ;# don't couple langevin bath to hydrogens
+
+# Output
+outputName		$outputname
+
+restartfreq		5000 
+dcdfreq			5000
+xstFreq			1000
+outputEnergies		1000
+outputPressure		1000
+outputTiming		1000
+
+#colvars			on
+# colvarsinput		$previous.restart.colvars.state
+#colvarsConfig		dihed.in
+
+#source eabf.tcl
+#set eabf_inputname       0                        ;# restart file name or "0"
+#set eabf_outputname      output_eabf/alad-eabf.restart      ;# restart file
+#set eabf_temperature     300
+#set eabf_outputfreq     20000
+
+#==================================
+#1 ns = 10^6 fs = 1000000
+#50000000 * 2.0 fs = 100 ns
+#================================== 
+
+CUDASOAIntegrate on
+
+gpuGlobal on
+#gpuGlobalProfilingFreq 500
+pytorchForces on
+pytorchForcesModel alad_metad.pt
+# deviceMigration on
+firsttimestep 0
+run 50000000
+# run 100

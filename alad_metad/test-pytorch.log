@@ -1,0 +1,243 @@
+Charm++: standalone mode (not using charmrun)
+Charm++> Running in Multicore mode: 2 threads (PEs)
+Charm++> Using recursive bisection (scheme 3) for topology aware partitions
+Converse/Charm++ Commit ID: v70000
+CharmLB> Load balancer assumes all CPUs are same.
+Charm++> Running on 1 hosts (1 sockets x 8 cores x 2 PUs = 16-way SMP)
+Charm++> cpu topology info is gathered in 0.000 seconds.
+Info: Built with CUDA version 12030
+Did not find +devices i,j,k,... argument, using all
+Pe 0 physical rank 0 will use CUDA device of pe 1
+Pe 1 physical rank 1 binding to CUDA device 0 on summersnow: 'NVIDIA GeForce RTX 3060 Laptop GPU'  Mem: 5930MB  Rev: 8.6  PCI: 0:1:0
+HAPI> Config: 1 device(s) per process, 2 PE(s) per device, 1 device(s) per host
+HAPI> Enabling P2P access between devices
+Info: NAMD 3.0b6 for Linux-x86_64-multicore-CUDA
+Info: 
+Info: Please visit http://www.ks.uiuc.edu/Research/namd/
+Info: for updates, documentation, and support information.
+Info: 
+Info: Please cite Phillips et al., J. Chem. Phys. 153:044130 (2020) doi:10.1063/5.0014475
+Info: in all publications reporting results obtained with NAMD.
+Info: 
+Info: Based on Charm++/Converse 70000 for multicore-linux-x86_64
+Info: Built Thu May 2 11:54:04 AM CDT 2024 by hanatok on summersnow
+Info: 1 NAMD  3.0b6  Linux-x86_64-multicore-CUDA  2    summersnow  hanatok
+Info: Running on 2 processors, 1 nodes, 1 physical nodes.
+Info: CPU topology information available.
+Info: Charm++/Converse parallel runtime startup completed at 0.0759234 s
+CkLoopLib is used in SMP with simple dynamic scheduling (converse-level notification)
+Info: 0 MB of memory in use based on /proc/self/stat
+Info: Configuration file is ./alad-test.conf
+Info: Changed directory to .
+TCL: Suspending until startup complete.
+Warning: Option "1-4scaling" has been deprecated. Instead use "oneFourScaling".
+Warning: Option "CUDASOAintegrate" has been deprecated. Instead use "GPUresident".
+Info: EXTENDED SYSTEM FILE   input_wb29/alad-wb_mineq29.xsc
+Info: Tuning parameters to improve GPU-resident performance
+Info: Setting margin to 4
+Warning: The Langevin gamma parameters differ over the particles,
+Warning: requiring extra work per step to constrain rigid bonds.
+Warning: Disabling lonepair support due to incompatability with GPU-resident.
+Info: Running with GPU-resident mode
+Info: SIMULATION PARAMETERS:
+Info: TIMESTEP               2
+Info: NUMBER OF STEPS        0
+Info: STEPS PER CYCLE        10
+Info: PERIODIC CELL BASIS 1  27.9156 0 0
+Info: PERIODIC CELL BASIS 2  0 27.8278 0
+Info: PERIODIC CELL BASIS 3  0 0 27.8249
+Info: PERIODIC CELL CENTER   -0.111763 -0.127061 0.0425804
+Info: WRAPPING WATERS AROUND PERIODIC BOUNDARIES ON OUTPUT.
+Info: LOAD BALANCER  Centralized
+Info: LOAD BALANCING STRATEGY  New Load Balancers -- DEFAULT
+Info: LDB PERIOD             2000 steps
+Info: FIRST LDB TIMESTEP     50
+Info: LAST LDB TIMESTEP     -1
+Info: LDB BACKGROUND SCALING 1
+Info: HOM BACKGROUND SCALING 1
+Info: PME BACKGROUND SCALING 1
+Info: MIN ATOMS PER PATCH    40
+Info: EMPTY PATCH LOAD       40 ATOMS
+Info: INITIAL TEMPERATURE    300
+Info: CENTER OF MASS MOVING INITIALLY? NO
+Info: DIELECTRIC             1
+Info: EXCLUDE                SCALED ONE-FOUR
+Info: 1-4 ELECTROSTATICS SCALED BY 1
+Info: MODIFIED 1-4 VDW PARAMETERS WILL BE USED
+Info: DCD FILENAME           output/alad-test.dcd
+Info: DCD FREQUENCY          5000
+Info: DCD FIRST STEP         5000
+Info: DCD FILE WILL CONTAIN UNIT CELL DATA
+Info: XST FILENAME           output/alad-test.xst
+Info: XST FREQUENCY          1000
+Info: NO VELOCITY DCD OUTPUT
+Info: NO FORCE DCD OUTPUT
+Info: OUTPUT FILENAME        output/alad-test
+Info: BINARY OUTPUT FILES WILL BE USED
+Info: RESTART FILENAME       output/alad-test.restart
+Info: RESTART FREQUENCY      5000
+Info: BINARY RESTART FILES WILL BE USED
+Info: SWITCHING ACTIVE
+Info: SWITCHING ON           10
+Info: SWITCHING OFF          12
+Info: PAIRLIST DISTANCE      13.5
+Info: PAIRLIST SHRINK RATE   0.01
+Info: PAIRLIST GROW RATE     0.01
+Info: PAIRLIST TRIGGER       0.3
+Info: PAIRLISTS PER CYCLE    2
+Info: PAIRLISTS ENABLED
+Info: MARGIN                 4
+Info: HYDROGEN GROUP CUTOFF  2.5
+Info: PATCH DIMENSION        20
+Info: ENERGY OUTPUT STEPS    1000
+Info: ENERGY EVALUATION STEPS    1000
+Info: OUTPUT ENERGY PRECISION 4
+Info: OUPUT ENERGY PRECISION 4
+Info: CROSSTERM ENERGY INCLUDED IN DIHEDRAL
+Info: TIMING OUTPUT STEPS    1000
+Info: PRESSURE OUTPUT STEPS  1000
+Info: LANGEVIN DYNAMICS ACTIVE
+Info: LANGEVIN TEMPERATURE   300
+Info: LANGEVIN USING BBK INTEGRATOR
+Info: LANGEVIN DAMPING COEFFICIENT IS 1 INVERSE PS
+Info: LANGEVIN DYNAMICS NOT APPLIED TO HYDROGENS
+Info: PARTICLE MESH EWALD (PME) ACTIVE
+Info: PME TOLERANCE               1e-06
+Info: PME EWALD COEFFICIENT       0.257952
+Info: PME INTERPOLATION ORDER     4
+Info: PME GRID DIMENSIONS         28 28 28
+Info: PME MAXIMUM GRID SPACING    1
+Info: PME CALCULATION WILL BE PERFORMED ON GPU
+Info: FULL ELECTROSTATIC EVALUATION FREQUENCY      2
+Info: USING VERLET I (r-RESPA) MTS SCHEME.
+Info: C1 SPLITTING OF LONG RANGE ELECTROSTATICS
+Info: PLACING ATOMS IN PATCHES BY HYDROGEN GROUPS
+Info: RIGID BONDS TO HYDROGEN : ALL
+Info:         ERROR TOLERANCE : 1e-08
+Info:          MAX ITERATIONS : 100
+Info: RIGID WATER USING SETTLE ALGORITHM
+Info: RANDOM NUMBER SEED     1
+Info: USE HYDROGEN BONDS?    NO
+Info: COORDINATE PDB         input_wb29/alad-wb_mineq29.pdb
+Info: STRUCTURE FILE         input_wb29/alad-wb29.psf
+Info: PARAMETER file: CHARMM format! 
+Info: PARAMETERS             input_wb29/par_all27_prot_lipid.prm
+Info: PARAMETERS             input_wb29/alad.prm
+Info: USING ARITHMETIC MEAN TO COMBINE L-J SIGMA PARAMETERS
+Info: SKIPPING rtf SECTION IN STREAM FILE
+Info: SUMMARY OF PARAMETERS:
+Info: 180 BONDS
+Info: 447 ANGLES
+Info: 566 DIHEDRAL
+Info: 46 IMPROPER
+Info: 6 CROSSTERM
+Info: 119 VDW
+Info: 0 VDW_PAIRS
+Info: 0 NBTHOLE_PAIRS
+Info: TIME FOR READING PSF FILE: 0.00352896
+Info: Reading pdb file input_wb29/alad-wb_mineq29.pdb
+Info: TIME FOR READING PDB FILE: 0.00152978
+Info: 
+Info: ****************************
+Info: STRUCTURE SUMMARY:
+Info: 2176 ATOMS
+Info: 1457 BONDS
+Info: 754 ANGLES
+Info: 41 DIHEDRALS
+Info: 4 IMPROPERS
+Info: 1 CROSSTERMS
+Info: 0 EXCLUSIONS
+Info: 2166 RIGID BONDS
+Info: 4362 DEGREES OF FREEDOM
+Info: 728 HYDROGEN GROUPS
+Info: 4 ATOMS IN LARGEST HYDROGEN GROUP
+Info: 728 MIGRATION GROUPS
+Info: 4 ATOMS IN LARGEST MIGRATION GROUP
+Info: TOTAL MASS = 13079.2 amu
+Info: TOTAL CHARGE = 2.23517e-08 e
+Info: MASS DENSITY = 1.00481 g/cm^3
+Info: ATOM DENSITY = 0.10067 atoms/A^3
+Info: *****************************
+Info: 
+Info: Entering startup at 0.0888396 s, 0 MB of memory in use
+Info: Startup phase 0 took 0.000137166 s, 0 MB of memory in use
+Info: ADDED 2252 IMPLICIT EXCLUSIONS
+Info: Startup phase 1 took 0.000634429 s, 0 MB of memory in use
+Info: NONBONDED TABLE R-SQUARED SPACING: 0.0625
+Info: NONBONDED TABLE SIZE: 769 POINTS
+Info: ABSOLUTE IMPRECISION IN FAST TABLE FORCE: 2.64698e-23 AT 11.9138
+Info: RELATIVE IMPRECISION IN FAST TABLE FORCE: 1.40436e-16 AT 11.9138
+Info: INCONSISTENCY IN FAST TABLE ENERGY VS FORCE: 0.000325096 AT 11.9556
+Info: ABSOLUTE IMPRECISION IN SCOR TABLE FORCE: 4.10282e-22 AT 11.9138
+Info: RELATIVE IMPRECISION IN SCOR TABLE FORCE: 3.56912e-15 AT 11.9138
+Info: INCONSISTENCY IN SCOR TABLE ENERGY VS FORCE: 0.000324844 AT 11.9556
+Info: ABSOLUTE IMPRECISION IN VDWA TABLE ENERGY: 9.86076e-32 AT 11.8295
+Info: RELATIVE IMPRECISION IN VDWA TABLE ENERGY: 6.75473e-14 AT 11.9138
+Info: ABSOLUTE IMPRECISION IN VDWA TABLE FORCE: 4.62223e-32 AT 11.9138
+Info: RELATIVE IMPRECISION IN VDWA TABLE FORCE: 2.12237e-15 AT 11.9138
+Info: INCONSISTENCY IN VDWA TABLE ENERGY VS FORCE: 0.0040507 AT 0.251946
+Info: ABSOLUTE IMPRECISION IN VDWB TABLE ENERGY: 4.1359e-25 AT 11.8295
+Info: RELATIVE IMPRECISION IN VDWB TABLE ENERGY: 7.56853e-15 AT 11.9138
+Info: ABSOLUTE IMPRECISION IN VDWB TABLE FORCE: 3.87741e-26 AT 11.9138
+Info: RELATIVE IMPRECISION IN VDWB TABLE FORCE: 5.97409e-16 AT 11.9138
+Info: INCONSISTENCY IN VDWB TABLE ENERGY VS FORCE: 0.00150189 AT 0.251946
+Info: Startup phase 2 took 0.000666904 s, 0 MB of memory in use
+Info: Startup phase 3 took 0.000132417 s, 0 MB of memory in use
+Info: Startup phase 4 took 0.000127528 s, 0 MB of memory in use
+Info: Startup phase 5 took 0.000114399 s, 0 MB of memory in use
+Info: PATCH GRID IS 2 (PERIODIC) BY 1 (PERIODIC) BY 1 (PERIODIC)
+Info: PATCH GRID IS 2-AWAY BY 1-AWAY BY 1-AWAY
+Info: REMOVING COM VELOCITY -0.0479592 0.0665871 0.231041
+Info: LARGEST PATCH (1) HAS 1096 ATOMS
+Info: TORUS A SIZE 1 USING 0
+Info: TORUS B SIZE 1 USING 0
+Info: TORUS C SIZE 1 USING 0
+Info: TORUS MINIMAL MESH SIZE IS 1 BY 1 BY 1
+Info: Placed 100% of base nodes on same physical node as patch
+Info: Startup phase 6 took 0.00165626 s, 0 MB of memory in use
+Info: Use 3D box decompostion in PME FFT.
+Info: PME using 1 x 1 x 1 pencil grid for FFT and reciprocal sum.
+Info: Startup phase 7 took 0.00017481 s, 0 MB of memory in use
+Info: Updated CUDA force table with 4096 elements.
+Info: Updated CUDA LJ table with 119 x 119 elements.
+Info: Startup phase 8 took 0.000844508 s, 0 MB of memory in use
+Info: Startup phase 9 took 0.000126551 s, 0 MB of memory in use
+Info: Startup phase 10 took 0.000132975 s, 0 MB of memory in use
+Info: Startup phase 11 took 0.000253311 s, 0 MB of memory in use
+LDB: Central LB being created...
+Info: Creating CUDAGlobalMaster on PE 1
+Info: CudaGlobalMasterServer: initialized on PE 1 and GPU device 0
+Info: Startup phase 12 took 0.00189302 s, 0 MB of memory in use
+Info: CREATING 76 COMPUTE OBJECTS
+Info: Find valid config list on PE 0
+Info: Creating CudaGlobalMasterClient  on PE 1
+Info: This PytorchForces client is compiled with libtorch version 2.1.0
+Info: Loading a PytorchForces model from alad_metad.pt on GPU device 0
+Info: PytorchForces: method "set_step" found
+Info: PytorchForces: method "update_lattice" found
+Info: PytorchForces: method "total_force_on" found
+Info: PytorchForces: method "output_lines" found
+Info: PytorchForces: method "update_positions" found
+Info: PytorchForces: method "update_mass" found
+Info: PytorchForces: method "update_charge" found
+Info: PytorchForces: method "run_calculate" found
+Info: PytorchForces: method "calculate" found
+Info: PytorchForces: method "energy" found
+Info: Pytorch model alad_metad.pt has 5 atoms.
+Info: CudaGlobalMasterServer: adding client "pytorchForces"
+Info: Found 21 unique exclusion lists needing 28 bytes
+Info: useSync: 0 useProxySync: 0
+Info: Startup phase 13 took 0.0679976 s, 0 MB of memory in use
+Info: Startup phase 14 took 0.000198207 s, 0 MB of memory in use
+Info: Startup phase 15 took 5.3497e-05 s, 0 MB of memory in use
+Info: Finished startup at 0.163983 s, 0 MB of memory in use
+
+TCL: Running for 50000000 steps
+PRESSURE: 0 -500.946 -390.08 -239.834 -390.08 -1127.12 -48.626 -239.826 -48.6266 -650.538
+GPRESSURE: 0 -454.608 -545.533 -149.652 -615.763 -1178.88 44.687 1.03232 -64.8195 -535.713
+ETITLE:      TS           BOND          ANGLE          DIHED          IMPRP               ELECT            VDW       BOUNDARY           MISC        KINETIC               TOTAL           TEMP      POTENTIAL       TOTALAVG        TEMPAVG            PRESSURE      GPRESSURE         VOLUME       PRESSAVG      GPRESSAVG
+
+ENERGY:       0         2.3267        11.5603         2.4551         0.3799          -7727.1229       679.2867         0.0000         0.0000      1270.2545          -5760.8598       293.0863     -7031.1143     -5760.8598       293.0863           -759.5351      -723.0661     21615.2093      -759.5351      -723.0661
+
+OPENING EXTENDED SYSTEM TRAJECTORY FILE
+FATAL ERROR: Unable to open text file output/alad-test.xst: No such file or directory
