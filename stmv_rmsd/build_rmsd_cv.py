@@ -65,7 +65,7 @@ def build_rmsd_cv(atom_positions, atom_serials):
             return [s]
 
         @torch.jit.export
-        def update_atoms(self):
+        def update_positions(self):
             if self.step % self.mts == 0:
                 return True
             else:
