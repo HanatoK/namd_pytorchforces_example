@@ -90,9 +90,10 @@ CUDASOAIntegrate on
 
 gpuGlobal on
 #gpuGlobalProfilingFreq 500
-pytorchForces on
-pytorchForcesModel alad_metad.pt
+#pytorchForces on
+#pytorchForcesModel alad_metad.pt
 # deviceMigration on
+gpuGlobalCreateClient ../common/libpytorchforces.so pytorch_metad alad_metad.pt
 firsttimestep 0
 run 50000000
 # run 100

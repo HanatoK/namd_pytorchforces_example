@@ -66,8 +66,8 @@ CUDASOAIntegrate on
 # colvarsConfig stmv_rmsd.colvars
 
 gpuGlobal on
-pytorchForces on
-pytorchForcesModel RMSD_opt.pt
+#pytorchForces on
+#pytorchForcesModel RMSD_opt.pt
 
 # Output
 outputName          stmv-pytorch
@@ -75,6 +75,8 @@ outputName          stmv-pytorch
 outputEnergies      100
 outputTiming        100
 restartfreq         1000
+
+gpuGlobalCreateClient ../common/libpytorchforces.so rmsd RMSD_opt.pt
 
 numsteps            1000
 
